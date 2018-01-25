@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(SignOutput)'=='true'">
+    <!-- VSIX projects derive from CSharp projects, but we want to sign the VSIX, not an assembly,
+          so disable signing before importing the CSharp targets -->
+    <SignVsix>true</SignVsix>
+    <SignOutput>false</SignOutput>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.VisualStudio.Debugger.VSCodeDebugAdapterHost.CSharp.targets"/>
+
+  <!-- Sign the output VSIX unless signing is turned off -->
+  <ItemGroup Condition=" '$(SignVsix)'=='true' ">
+    <FilesToSign Include="$(TargetVsixContainer)">
+      <InProject>false</InProject>
+      <Authenticode>vsix</Authenticode>
+    </FilesToSign>
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(IsVSOBuild)' == 'true'">
+      <PropertyGroup>
+        <_VsixVersion>$(FullVersion)</_VsixVersion>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <!-- For local builds, use a hard-coded VSIX version higher than any VSO build id to work around a
+            VS SDK issue where old versions of an extension are sometimes not removed before deploying the
+            new version when launching a VSIX project. -->
+      <PropertyGroup>
+        <_VsixVersion>15.9999.0.0</_VsixVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <!-- Invoked by VS SDK via vsixmanifest to get the version number -->
+  <Target Name="GetVsixVersion"
+          Outputs="$(VsixVersion)">
+    <PropertyGroup>
+      <VsixVersion>$(_VsixVersion)</VsixVersion>
+    </PropertyGroup>
+  </Target>
+</Project>

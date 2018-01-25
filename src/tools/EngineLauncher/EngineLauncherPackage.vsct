@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidEngineLauncherPackage">
+    <Groups>
+      <Group guid="guidEngineLauncherPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidEngineLauncherPackageCmdSet" id="LaunchEngineCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidEngineLauncherPackageCmdSet" id="MyMenuGroup" />
+        <Strings>
+          <ButtonText>Launch Debug Adapter</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="guidEngineLauncherPackage" value="{ff5205bf-e1fd-4fb4-8105-91825e6834f0}" />
+
+    <GuidSymbol name="guidEngineLauncherPackageCmdSet" value="{67f86efb-e995-4cfe-9463-ee564a43d07a}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="LaunchEngineCommandId" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

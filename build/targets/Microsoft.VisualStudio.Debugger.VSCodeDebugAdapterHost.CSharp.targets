@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="Microsoft.VisualStudio.Debugger.VSCodeDebugAdapterHost.Core.targets"/>
+
+  <!-- Localize the output assembly if requested -->
+  <ItemGroup Condition=" '$(LocalizeOutputAssembly)'=='true' ">
+    <FilesToLocalize Include="$(TargetPath)">
+      <TranslationFile>$(RepositoryRoot)LOC\LCL\{Lang}\$(TargetFileName).lcl</TranslationFile>
+      <LciCommentFile>$(RepositoryRoot)LOC\LCI\$(TargetFileName).lci</LciCommentFile>
+    </FilesToLocalize>
+    <!-- Ensure new localized assemblies are signed -->
+    <SignFilesDependsOn Include="GatherLocalizedOutputsForSigning" />
+  </ItemGroup>
+
+  <!-- Custom target that will be invoked before signing (and after localization).
+       This target is conditioned to only run if localization is currently turned on. -->
+  <Target Name="GatherLocalizedOutputsForSigning" Condition="'$(LocalizationEnabled)' == 'true'">
+    <ItemGroup>
+      <FilesToSign Include="$(OutDir)\localize\**\$(TargetName).resources.dll">
+        <Authenticode>$(AuthenticodeCertFriendlyName)</Authenticode>
+        <StrongName>$(StrongNameCertFriendlyName)</StrongName>
+      </FilesToSign>
+    </ItemGroup>
+  </Target>
+
+  <!-- Sign the output assembly unless signing is turned off -->
+  <PropertyGroup Condition=" '$(SignOutput)'=='true' ">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(BuildDir)\keys\FinalPublicKey.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(SignOutput)'=='true' ">
+    <FilesToSign Include="$(TargetPath)">
+      <Authenticode>$(AuthenticodeCertFriendlyName)</Authenticode>
+      <StrongName>$(StrongNameCertFriendlyName)</StrongName>
+    </FilesToSign>
+  </ItemGroup>
+
+  <!-- Generate AssemblyInfo.cs
+       Depends on "PrepareForBuild" to ensure the IntermediateOutputPath is created -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>GenerateAssemblyInfoFile;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+    <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)GeneratedAssemblyInfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+
+  <Target Name="GenerateAssemblyInfoFile"
+          DependsOnTargets="PrepareForBuild"
+          Inputs="$(MSBuildThisFileFullPath)"
+          Outputs="$(GeneratedAssemblyInfoFile)" >
+    <Error Condition="'$(BuildVersion)'==''" Text="'BuildVersion' is not defined." />
+    <Error Condition="'$(AssemblyVersion)'==''" Text="'AssemblyVersion' is not defined." />
+
+    <ItemGroup>
+      <AssemblyAttribute Include="System.Reflection.AssemblyCompanyAttribute">
+        <_Parameter1>Microsoft Corporation</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Reflection.AssemblyProductAttribute">
+        <_Parameter1>Microsoft ® Visual Studio ®</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
+        <_Parameter1>© Microsoft Corporation. All rights reserved.</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Reflection.AssemblyVersionAttribute">
+        <_Parameter1>$(AssemblyVersion)</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Reflection.AssemblyFileVersionAttribute">
+        <_Parameter1>$(FullVersion)</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Reflection.AssemblyInformationalVersionAttribute">
+        <_Parameter1>$(BuildVersionExtended)</_Parameter1>
+      </AssemblyAttribute>
+    </ItemGroup>
+
+    <WriteCodeFragment AssemblyAttributes="@(AssemblyAttribute)"
+                       Language="C#"
+                       OutputFile="$(GeneratedAssemblyInfoFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+  </Target>
+</Project>

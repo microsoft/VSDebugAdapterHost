@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetsDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</TargetsDir>
+    <BuildDir>$([System.IO.Path]::GetFullPath('$(TargetsDir)\..\'))</BuildDir>
+    <RepositoryRoot>$([System.IO.Path]::GetFullPath('$(TargetsDir)\..\..\'))</RepositoryRoot>
+    <NugetPackageRoot Condition=" '$(NugetPackageRoot)' == '' ">$(RepositoryRoot)src\packages\</NugetPackageRoot>
+    <NuGetDir>$(NugetPackageRoot)NuGet.CommandLine.4.1.0\tools\</NuGetDir>
+  </PropertyGroup>
+
+  <!-- Unify the bin and obj folders for all projects -->
+  <PropertyGroup>
+    <OutputPathBase>$(RepositoryRoot)bin\$(Configuration)\</OutputPathBase>
+    <OutDir>$(OutputPathBase)</OutDir>
+    <OutDir Condition=" '$(OutputSubPath)'!='' ">$(OutDir)$(OutputSubPath)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+    <IntermediateOutputPath>$(RepositoryRoot)obj\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <IntermediateGeneratedOutputPath>$(IntermediateOutputPath)Generated\</IntermediateGeneratedOutputPath>
+  </PropertyGroup>
+
+  <!-- VSSDK Information -->
+  <PropertyGroup>
+    <VisualStudioVersion>15.0</VisualStudioVersion>
+    <VSSDKPackageVersion>15.5.72</VSSDKPackageVersion>
+  </PropertyGroup>
+  <Import Project="$(NugetPackageRoot)Microsoft.VSSDK.BuildTools.$(VSSDKPackageVersion)\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('$(NugetPackageRoot)Microsoft.VSSDK.BuildTools.$(VSSDKPackageVersion)\build\Microsoft.VSSDK.BuildTools.props')" />
+
+  <!-- MicroBuild Information -->
+  <PropertyGroup>
+    <MicroBuildCoreNugetPackageVersion>0.2.0</MicroBuildCoreNugetPackageVersion>
+  </PropertyGroup>
+  <Import Project="$(NugetPackageRoot)MicroBuild.Core.$(MicroBuildCoreNugetPackageVersion)\build\MicroBuild.Core.props" Condition="Exists('$(NugetPackageRoot)MicroBuild.Core.$(MicroBuildCoreNugetPackageVersion)\build\MicroBuild.Core.props')" />
+
+  <!-- Versioning Information -->
+  <PropertyGroup>
+    <ProductVersion Condition="'$(ProductVersion)' == ''">15.7</ProductVersion>
+
+    <!-- BUILD_BUILDNUMBER is in the format (BUILDNAME_)YYYYMMDD.R(.SUFFIX) -->
+    <!-- This build numer is used by local builds. This doesn't use .0 since NuGet truncates that. Official build numbers will come from VSO. -->
+    <BuildDateRevision>$([System.DateTime]::Now.ToString(yyyyMMdd)).8</BuildDateRevision>
+    <BuildDateRevision Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</BuildDateRevision>
+
+    <!-- Remove the build name if it exists in BUILD_BUILDNUMBER -->
+    <BuildDateNumberIndex>$(BuildDateRevision.LastIndexOf('_'))</BuildDateNumberIndex>
+    <BuildDateRevision Condition=" '$(BuildDateNumberIndex)' != '-1' ">$(BuildDateRevision.Substring($(BuildDateNumberIndex)).TrimStart('_'))</BuildDateRevision>
+
+    <!-- Remove the build revision if it exists in BUILD_BUILDNUMBER -->
+    <BuildDateRevisionSuffixIndex>$(BuildDateRevision.IndexOf('.', 10))</BuildDateRevisionSuffixIndex>
+    <BuildDateRevision Condition=" '$(BuildDateRevisionSuffixIndex)' != '-1' ">$(BuildDateRevision.Substring(0, $(BuildDateRevisionSuffixIndex)))</BuildDateRevision>
+    <!-- BuildDateRevision is of the format YYYYMMDD.R -->
+
+    <BuildVersionYearZero>2016</BuildVersionYearZero>
+    <BuildVersionYear>$([MSBuild]::Subtract($([System.Int32]::Parse($(BuildDateRevision.Substring(0,4)))),$(BuildVersionYearZero)))</BuildVersionYear>
+    <BuildVersionMajor>$(BuildVersionYear)$(BuildDateRevision.Substring(4, 4))</BuildVersionMajor>
+    <BuildVersionMinor>$(BuildDateRevision.Substring(9))</BuildVersionMinor>
+    <BuildVersion>$(BuildVersionMajor.TrimStart('0')).$(BuildVersionMinor)</BuildVersion>
+
+    <AssemblyVersion>$(ProductVersion).0.0</AssemblyVersion>
+    <FullVersion>$(ProductVersion).$(BuildVersion)</FullVersion>
+    <FullVsixVersion>$(VsixVersion).$(BuildVersion)</FullVsixVersion>
+    <BuildVersionExtended>$(FullVersion)</BuildVersionExtended>
+    <BuildVersionExtended Condition="'$(BUILD_SOURCEVERSION)'!=''">$(BuildVersionExtended) commit:$(BUILD_SOURCEVERSION)</BuildVersionExtended>
+  </PropertyGroup>
+
+  <!-- Signing Information -->
+  <PropertyGroup>
+    <SignOutput Condition=" '$(SignOutput)'=='' ">true</SignOutput>
+    <AuthenticodeCertFriendlyName>Microsoft</AuthenticodeCertFriendlyName>
+    <StrongNameCertFriendlyName>StrongName</StrongNameCertFriendlyName>
+    <VsixAuthenticodeCertFriendlyName>Vsix</VsixAuthenticodeCertFriendlyName>
+    <MsiAuthenticodeCertFriendlyName>MicrosoftSHA1</MsiAuthenticodeCertFriendlyName>
+  </PropertyGroup>
+
+  <!-- MSBuild Community Tasks Information -->
+  <PropertyGroup>
+    <MSBuildCommunityTasksVersion>1.5.0.214</MSBuildCommunityTasksVersion>
+    <MSBuildCommunityTasksPath>$(NugetPackageRoot)MSBuildTasks.$(MSBuildCommunityTasksVersion)\tools\</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <!-- Glass settings -->
+  <PropertyGroup>
+    <!-- To update this build number run UpdateGlassVersion.ps1 -->
+    <GlassVersion>15.0.27129-Build1184873</GlassVersion>
+  </PropertyGroup>
+
+  <!-- VSO settings -->
+  <PropertyGroup>
+    <IsVSOBuild Condition="'$(TF_BUILD)' == 'true'">true</IsVSOBuild>
+  </PropertyGroup>
+</Project>

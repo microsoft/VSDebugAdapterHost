@@ -1,0 +1,60 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+#charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+insert_final_newline = false
+trim_trailing_whitespace = true
+
+# XML Formats
+
+[*.{xml,csproj,nuspec,vsct,resx,config}]
+indent_size = 2
+
+[*.{targets,props}]
+indent_size = 2
+
+[*.{GlassTestRoot,GlassTestGroup,GlassTestProps}]
+indent_size = 2
+
+# JSON
+
+[*.json]
+#charset = utf-8-bom
+indent_size = 2
+
+# Scripts
+
+[*.ps1]
+indent_size = 2
+
+[*.cmd]
+indent_size = 2
+
+# .NET
+
+[*.{cs,vb}]
+#charset = utf-8-bom
+dotnet_sort_system_directives_first = true
+
+[*.cs]
+# Don't use var
+csharp_style_var_for_built_in_types = false:error
+csharp_style_var_when_type_is_apparent = false:error
+
+# Use "this" for members
+dotnet_style_qualification_for_field = true:error
+dotnet_style_qualification_for_property = true:error
+dotnet_style_qualification_for_method = true:error
+dotnet_style_qualification_for_event = true:error
+
+# Use language types for locals
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+
+# Used CLR types for static
+dotnet_style_predefined_type_for_member_access = false:error

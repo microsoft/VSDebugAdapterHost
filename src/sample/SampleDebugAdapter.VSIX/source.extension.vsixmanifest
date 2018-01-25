@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="SampleDebugAdapter.VSIX.d7cfcce6-7978-401f-a7ad-5c5b0a8075f3" Version="1.0" Language="en-US" Publisher="Microsoft" />
+        <DisplayName>SampleDebugAdapter.VSIX</DisplayName>
+        <Description xml:space="preserve">Packaging project for SampleDebugAdapter, demonstrating registration with VS and the Debug Adapter Host.</Description>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0]" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    </Dependencies>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="SampleDebugAdapter" Path="|SampleDebugAdapter|" AssemblyName="|SampleDebugAdapter;AssemblyName|" d:VsixSubPath="adapter" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="AdapterRegistration.pkgdef" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll" AssemblyName="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" d:VsixSubPath="adapter" />
+    </Assets>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.Debugger.JustInTime" Version="[15.0,16.0)" DisplayName="Just-In-Time debugger" />
+    </Prerequisites>
+</PackageManifest>
