@@ -155,7 +155,7 @@
 
 ;
 ; Exception type registrations
-;   Both "State" and "Code" are required for all exception types
+;   A "State" is required for all exception types
 ;
 ; -------------------------------------------------------------------
 
@@ -165,23 +165,20 @@
 ; State for this exception
 "State"=dword:00004001
 
-; Numeric code associated with this exception (generally 0 - include 0x1000 in "State" if non-zero)
-"Code"=dword:00000000
+; Optional numeric code associated with this exception (include 0x1000 in "State" if used)
+;"Code"=dword:00000000
 
 ; SampleException2 - State = Break when thrown
 [$RootKey$\AD7Metrics\Exception\{4BF22514-1EBE-407F-9A54-50C045F90AD1}\Sample Debug Adapter Exceptions\SampleException2]
 "State"=dword:00004001
-"Code"=dword:00000000
 
 ; SampleException3 - State = Break when user-uncaught
 [$RootKey$\AD7Metrics\Exception\{4BF22514-1EBE-407F-9A54-50C045F90AD1}\Sample Debug Adapter Exceptions\SampleException3]
 "State"=dword:00004020
-"Code"=dword:00000000
 
 ; SampleException4 - State = Break when user-uncaught
 [$RootKey$\AD7Metrics\Exception\{4BF22514-1EBE-407F-9A54-50C045F90AD1}\Sample Debug Adapter Exceptions\SampleException4]
 "State"=dword:00004020
-"Code"=dword:00000000
 
 ;
 ; Type Registrations
