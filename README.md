@@ -15,6 +15,10 @@ Start with the [Wiki](https://github.com/Microsoft/VSDebugAdapterHost/wiki), whi
 
 If you run into bugs or missing features while integrating a debug adapter with Visual Studio, file an [Issue](https://github.com/Microsoft/VSDebugAdapterHost/issues).
 
+## Support for other VS Code components
+
+If you're porting an extension that includes a language service as well as a debug adapter, take a look at [Visual Studio's support for Language Server Protocol extensions](https://docs.microsoft.com/en-us/visualstudio/extensibility/adding-an-lsp-extension).
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
