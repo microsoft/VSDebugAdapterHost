@@ -13,7 +13,7 @@ This project contains sample code demonstrating extension packaging and features
 
 Start with the [Wiki](https://github.com/Microsoft/VSDebugAdapterHost/wiki), which contains documentation and walkthroughs to help you bring an existing debug adapter into Visual Studio.
 
-If you run into bugs or missing features while integrating a debug adapter with Visual Studio, file an [Issue](https://github.com/Microsoft/VSDebugAdapterHost/issues).
+If you run into bugs or missing features while integrating a debug adapter with Visual Studio, you can file an [Issue](https://github.com/Microsoft/VSDebugAdapterHost/issues) or contact the team at vsdahfeed@microsoft.com.
 
 ## Support for other VS Code components
 
