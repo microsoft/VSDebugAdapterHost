@@ -21,7 +21,7 @@
   <!-- VSSDK Information -->
   <PropertyGroup>
     <VisualStudioVersion>15.0</VisualStudioVersion>
-    <VSSDKPackageVersion>15.5.72</VSSDKPackageVersion>
+    <VSSDKPackageVersion>17.2.2186</VSSDKPackageVersion>
   </PropertyGroup>
   <Import Project="$(NugetPackageRoot)Microsoft.VSSDK.BuildTools.$(VSSDKPackageVersion)\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('$(NugetPackageRoot)Microsoft.VSSDK.BuildTools.$(VSSDKPackageVersion)\build\Microsoft.VSSDK.BuildTools.props')" />
 
