@@ -6,7 +6,7 @@
         <Description xml:space="preserve">Packaging project for SampleDebugAdapter, demonstrating registration with VS and the Debug Adapter Host.</Description>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0]" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,)" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
@@ -14,10 +14,10 @@
     <Assets>
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="SampleDebugAdapter" Path="|SampleDebugAdapter|" AssemblyName="|SampleDebugAdapter;AssemblyName|" d:VsixSubPath="adapter" />
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="AdapterRegistration.pkgdef" />
-        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll" AssemblyName="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" d:VsixSubPath="adapter" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll" AssemblyName="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" d:VsixSubPath="adapter" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.Debugger.JustInTime" Version="[15.0,16.0)" DisplayName="Just-In-Time debugger" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.Debugger.JustInTime" Version="[15.0,)" DisplayName="Just-In-Time debugger" />
     </Prerequisites>
 </PackageManifest>
