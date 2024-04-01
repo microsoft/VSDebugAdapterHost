@@ -49,7 +49,7 @@
     <BuildDateRevision Condition=" '$(BuildDateRevisionSuffixIndex)' != '-1' ">$(BuildDateRevision.Substring(0, $(BuildDateRevisionSuffixIndex)))</BuildDateRevision>
     <!-- BuildDateRevision is of the format YYYYMMDD.R -->
 
-    <BuildVersionYearZero>2016</BuildVersionYearZero>
+    <BuildVersionYearZero>2023</BuildVersionYearZero>
     <BuildVersionYear>$([MSBuild]::Subtract($([System.Int32]::Parse($(BuildDateRevision.Substring(0,4)))),$(BuildVersionYearZero)))</BuildVersionYear>
     <BuildVersionMajor>$(BuildVersionYear)$(BuildDateRevision.Substring(4, 4))</BuildVersionMajor>
     <BuildVersionMinor>$(BuildDateRevision.Substring(9))</BuildVersionMinor>
